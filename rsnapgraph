@@ -211,6 +211,22 @@ sizeGraph();
 # this uses the %topdir hash to graph the change in the number of files
 # over time, producing the rsnapgraph-files.png graph
 
+sub basePlotOptions
+{
+    # TODO m2k: make size dependant on number of snapshots
+    print GNUPLOT "set terminal png size 1000,480\n";
+    print GNUPLOT "set grid\n";
+    print GNUPLOT "set key left bottom\n";
+    print GNUPLOT "set style fill solid 1.0\n";
+    print GNUPLOT "set xlabel 'time of snapshot (month/day)'\n";
+    print GNUPLOT "set xlabel offset 0,-1\n";
+    print GNUPLOT "set xzeroaxis -1\n";
+    print GNUPLOT "set y2tics\n";
+    print GNUPLOT "set ytics nomirror\n";
+    print GNUPLOT "set boxwidth 0.25\n";
+    print GNUPLOT "set key left\n";
+}
+
 sub fileGraph
 {
     # start gnuplot
@@ -227,25 +243,13 @@ sub fileGraph
     $datestring = getDate(time());
     
     # prepare the plot
-    # TODO m2k: code is duplicated with sizeGraph
-    # TODO m2k: make size dependant on number of snapshots
-    print GNUPLOT "set terminal png size 1000,480\n";
-    print GNUPLOT "set grid\n";
-    print GNUPLOT "set key left bottom\n";
-    print GNUPLOT "set style fill solid 1.0\n";
-    print GNUPLOT "set xlabel 'time of snapshot (month/day)'\n";
-    print GNUPLOT "set xlabel offset 0,-1\n";
-    print GNUPLOT "set xzeroaxis -1\n";
-    print GNUPLOT "set y2tics\n";
-    print GNUPLOT "set ytics nomirror\n";
+    basePlotOptions();
     print GNUPLOT "set ylabel 'change in number of files (rel #)'\n";
     print GNUPLOT "set y2label 'number of files (abs #)'\n";
     print GNUPLOT "set output '$graphfile'\n";
     print GNUPLOT "set yrange [-$ymax:$ymax]\n";
     print GNUPLOT "set y2range [-$y2max:$y2max]\n";
     print GNUPLOT "set xrange [0:$xmax]\n";
-    print GNUPLOT "set boxwidth 0.25\n";
-    print GNUPLOT "set key left\n";
     print GNUPLOT "set title ",
         "\"Snapshot File Change\\n",
         "Generated on $datestring\"\n";
@@ -344,23 +348,13 @@ sub sizeGraph
     $y2max /= $y2factor;
     
     # prepare the plot
-    print GNUPLOT "set terminal png size 1000,480\n";
-    print GNUPLOT "set grid\n";
-    print GNUPLOT "set key left bottom\n";
-    print GNUPLOT "set style fill solid 1.0\n";
-    print GNUPLOT "set xlabel 'time of snapshot (month/day)'\n";
-    print GNUPLOT "set xlabel offset 0,-1\n";
-    print GNUPLOT "set xzeroaxis -1\n";
-    print GNUPLOT "set y2tics\n";
-    print GNUPLOT "set ytics nomirror\n";
+    basePlotOptions();
     print GNUPLOT "set ylabel 'change in disk space (rel $yunits)'\n";
     print GNUPLOT "set y2label 'disk space (abs $y2units)'\n";
     print GNUPLOT "set output '$graphfile'\n";
     print GNUPLOT "set yrange [-$ymax:$ymax]\n";
     print GNUPLOT "set y2range [-$y2max:$y2max]\n";
     print GNUPLOT "set xrange [0:$xmax]\n";
-    print GNUPLOT "set boxwidth 0.25\n";
-    print GNUPLOT "set key left\n";
     print GNUPLOT "set title ",
         "\"Snapshot Disk Space Change\\n",
         "Generated on $datestring\"\n";
