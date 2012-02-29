@@ -221,18 +221,20 @@ sub fileGraph
     $graphfile = "$graphdir/$graphfilebase";
 
     # set some variables for convenience
-    $ymax = $file{max} * 1.1;
+    $ymax = $file{max} > 0 ? $file{max} * 1.1 : 10;
     $y2max = $y2maxCount * 1.1;
     $xmax = $#inodes+2;
     $datestring = getDate(time());
     
     # prepare the plot
-    print GNUPLOT "set terminal png\n";
+    # TODO m2k: code is duplicated with sizeGraph
+    # TODO m2k: make size dependant on number of snapshots
+    print GNUPLOT "set terminal png size 1000,480\n";
     print GNUPLOT "set grid\n";
     print GNUPLOT "set key left bottom\n";
     print GNUPLOT "set style fill solid 1.0\n";
     print GNUPLOT "set xlabel 'time of snapshot (month/day)'\n";
-    print GNUPLOT "set xlabel ,-1\n";
+    print GNUPLOT "set xlabel offset 0,-1\n";
     print GNUPLOT "set xzeroaxis -1\n";
     print GNUPLOT "set y2tics\n";
     print GNUPLOT "set ytics nomirror\n";
@@ -244,7 +246,6 @@ sub fileGraph
     print GNUPLOT "set xrange [0:$xmax]\n";
     print GNUPLOT "set boxwidth 0.25\n";
     print GNUPLOT "set key left\n";
-    print GNUPLOT "set size 1.5,1\n";
     print GNUPLOT "set title ",
         "\"Snapshot File Change\\n",
         "Generated on $datestring\"\n";
@@ -264,9 +265,9 @@ sub fileGraph
         
     
     print GNUPLOT "plot ",
-        " '-' title 'number of new files (rel #)' with boxes fill 2 ",
-        ", '-' title 'number of deleted files (rel #)' with boxes fill 1 ",
-        ", '-' axis x1y2 title 'number of files (abs #)' with lines lw 50",
+        " '-' title 'number of new files (rel #)' with boxes fill solid 2 ",
+        ", '-' title 'number of deleted files (rel #)' with boxes fill solid 1 ",
+        ", '-' axis x1y2 title 'number of files (abs #)' with lines lw 5",
         "\n";
     
     # print the file increase data
@@ -323,7 +324,7 @@ sub sizeGraph
     $graphfile = "$graphdir/$graphfilebase";
     
     # set some variables for convenience
-    $ymax = $size{max} * 1.1;
+    $ymax = $size{max} > 0 ? $size{max} * 1.1 : 10;
     $y2max = $y2maxSize * 1.1;
     $xmax = $#inodes+2;
     $datestring = getDate(time());
@@ -343,12 +344,12 @@ sub sizeGraph
     $y2max /= $y2factor;
     
     # prepare the plot
-    print GNUPLOT "set terminal png\n";
+    print GNUPLOT "set terminal png size 1000,480\n";
     print GNUPLOT "set grid\n";
     print GNUPLOT "set key left bottom\n";
     print GNUPLOT "set style fill solid 1.0\n";
-    print GNUPLOT "set xlabel ' '\n";
-    print GNUPLOT "set xlabel ,-1\n";
+    print GNUPLOT "set xlabel 'time of snapshot (month/day)'\n";
+    print GNUPLOT "set xlabel offset 0,-1\n";
     print GNUPLOT "set xzeroaxis -1\n";
     print GNUPLOT "set y2tics\n";
     print GNUPLOT "set ytics nomirror\n";
@@ -360,7 +361,6 @@ sub sizeGraph
     print GNUPLOT "set xrange [0:$xmax]\n";
     print GNUPLOT "set boxwidth 0.25\n";
     print GNUPLOT "set key left\n";
-    print GNUPLOT "set size 1.5,1\n";
     print GNUPLOT "set title ",
         "\"Snapshot Disk Space Change\\n",
         "Generated on $datestring\"\n";
@@ -380,9 +380,9 @@ sub sizeGraph
         
     
     print GNUPLOT "plot ",
-        " '-' title 'size of new files (rel $yunits)' with boxes fill 2 ",
-        ", '-' title 'size of deleted files (rel $yunits)' with boxes fill 1 ",
-        ", '-' axis x1y2 title 'net change (abs $y2units)' with lines lw 50",
+        " '-' title 'size of new files (rel $yunits)' with boxes fill solid 2 ",
+        ", '-' title 'size of deleted files (rel $yunits)' with boxes fill solid 1 ",
+        ", '-' axis x1y2 title 'net change (abs $y2units)' with lines lw 5",
         "\n";
     
     # print the size increase data
