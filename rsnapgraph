@@ -267,7 +267,7 @@ sub fileGraph
     print GNUPLOT "plot ",
         " '-' title 'number of new files (rel #)' with boxes fill solid 2 ",
         ", '-' title 'number of deleted files (rel #)' with boxes fill solid 1 ",
-        ", '-' axis x1y2 title 'number of files (abs #)' with lines lw 5",
+        ", '-' axis x1y2 title 'number of files (abs #)' with lines lw 2",
         "\n";
     
     # print the file increase data
@@ -382,7 +382,7 @@ sub sizeGraph
     print GNUPLOT "plot ",
         " '-' title 'size of new files (rel $yunits)' with boxes fill solid 2 ",
         ", '-' title 'size of deleted files (rel $yunits)' with boxes fill solid 1 ",
-        ", '-' axis x1y2 title 'net change (abs $y2units)' with lines lw 5",
+        ", '-' axis x1y2 title 'net change (abs $y2units)' with lines lw 2",
         "\n";
     
     # print the size increase data
