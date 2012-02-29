@@ -213,8 +213,7 @@ sizeGraph();
 
 sub basePlotOptions
 {
-    # TODO m2k: make size dependant on number of snapshots
-    print GNUPLOT "set terminal png size 1000,480\n";
+    print GNUPLOT sprintf("set terminal png size %s,480\n", 150 + $#inodes * 110);
     print GNUPLOT "set grid\n";
     print GNUPLOT "set key left bottom\n";
     print GNUPLOT "set style fill solid 1.0\n";
